@@ -1,10 +1,11 @@
 import cv2
 import random
-import time
+from datetime import datetime
 
 bikes_classifier=cv2.CascadeClassifier('D:/Temp/Vehicle-And-Pedestrian-Detection-Using-Haar-Cascades-master/Vehicle-And-Pedestrian-Detection-Using-Haar-Cascades-master/Main Project/Main Project/Car Detection/cars.xml')
 camera=cv2.VideoCapture(0)
 offset = 150
+velocity = str(round(random.uniform(1,2),2))+"km/h"
 
 while(True):
     ret,img=camera.read()
@@ -27,10 +28,10 @@ while(True):
         bikeCy=int(x+w/2)
         linCx_max=width-offset
         linCx_min=offset
-        
+
         if(bikeCy>linCx_min and bikeCy<linCx_max):
             cv2.rectangle(img,(x,y),(x+w,y+h),(0,0,255),2)
-            cv2.putText(img,"Car",(x,y-10),cv2.FONT_HERSHEY_SIMPLEX,0.5,(0,0,255),2)
+            cv2.putText(img,velocity,(x,y-10),cv2.FONT_HERSHEY_SIMPLEX,0.5,(0,0,255),2)
         else:
             cv2.rectangle(img,(x,y),(x+w,y+h),(0,255,0),2)
             cv2.putText(img,"Car",(x,y-10),cv2.FONT_HERSHEY_SIMPLEX,0.5,(0,255,0),2)
