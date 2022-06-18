@@ -70,11 +70,6 @@ while(True):
             print(str(round(velocity,2)) + "cm/s")
             flag = 0
             break
-
-        '''else:
-            cv2.rectangle(img,(x,y),(x+w,y+h),(0,255,0),2)
-            cv2.putText(img,"Car",(x,y-10),cv2.FONT_HERSHEY_SIMPLEX,0.5,(0,255,0),2)
-            #velocity = str(round(random.uniform(1,2),2))+"km/h"'''
         
     cv2.imshow('LIVE',img)
     key=cv2.waitKey(15)
