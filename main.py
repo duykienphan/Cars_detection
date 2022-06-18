@@ -17,9 +17,6 @@ while(True):
     
     height,width=img.shape[0:2]
     
-    #img[0:70,0:width]=[0,0,255]
-    #cv2.putText(img,'MOTOR BIKE COUNT:',(10,50),cv2.FONT_HERSHEY_SIMPLEX,1.5,(255,255,255),2)
-    
     cv2.line(img,(width-offset,0),(width-offset,height),(0,255,255),2)
     cv2.line(img,(offset,0),(offset,height),(0,255,255),2)
     
@@ -41,8 +38,6 @@ while(True):
             cv2.rectangle(img,(x,y),(x+w,y+h),(0,255,0),2)
             cv2.putText(img,"Car",(x,y-10),cv2.FONT_HERSHEY_SIMPLEX,0.5,(0,255,0),2)
             velocity = str(round(random.uniform(1,2),2))+"km/h"
-
-        #cv2.putText(img,str(count),(500,50),cv2.FONT_HERSHEY_SIMPLEX,1.5,(255,255,255),2)
         
     cv2.imshow('LIVE',img)
     key=cv2.waitKey(1)
