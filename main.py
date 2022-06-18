@@ -4,7 +4,7 @@ import time
 import numpy as np
 from datetime import datetime
 
-cars_classifier=cv2.CascadeClassifier('D:/Temp/Car_Sideview_Detection-master/sideview_cascade_classifier.xml')
+cars_classifier=cv2.CascadeClassifier('D:/Temp/Car Detection/accuratelyModel.xml')
 camera=cv2.VideoCapture(0)
 
 offset = 150
