@@ -1,6 +1,10 @@
 import cv2
 import time
 import numpy as np
+import RPi.GPIO as GPIO
+
+GPIO.setmode(GPIO.BOARD)
+GPIO.setup(7, GPIO.OUT)
 
 cars_classifier=cv2.CascadeClassifier('D:/Temp/Car Detection/accuratelyModel.xml')
 camera=cv2.VideoCapture(0)
@@ -29,8 +33,8 @@ while(True):
     img = cv2.resize(img, (f_width, f_height))
     height,width=img.shape[0:2]
     
-    cv2.line(img,(width-offset,0),(width-offset,height),(0,255,255),2)
-    cv2.line(img,(offset,0),(offset,height),(255,0,0),2)
+    #cv2.line(img,(width-offset,0),(width-offset,height),(0,255,255),2)
+    #cv2.line(img,(offset,0),(offset,height),(255,0,0),2)
     
     blur=cv2.blur(img,(3,3))
     gray=cv2.cvtColor(blur,cv2.COLOR_BGR2GRAY)
@@ -65,11 +69,17 @@ while(True):
             if max_time < pass_time:
                 max_time = pass_time     
             print(str(max_time) + "s")
-            velocity = road_length / max_time #for cm/s
+            velocity = round(road_length / max_time,2) #for cm/s
             #velocity=velocity*0.036 #for km/h
-            print(str(round(velocity,2)) + "cm/s")
+            print(velocity)
             flag = 0
-            break
+            if (velocity > 10):
+                GPIO.output(7, True)
+                cv2.putText(img,"Van toc cua xe: "+str(velocity)+"cm/s - Qua toc do",(30,30),cv2.FONT_HERSHEY_COMPLEX,1,(0,0,255),2)
+            else:
+                GPIO.output(7, False)
+                cv2.putText(img,"Van toc cua xe: "+str(velocity)+"cm/s",(30,30),cv2.FONT_HERSHEY_COMPLEX,1,(0,255,0),2)
+                
         
     cv2.imshow('LIVE',img)
     key=cv2.waitKey(15)
