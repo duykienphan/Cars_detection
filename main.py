@@ -12,9 +12,11 @@ camera=cv2.VideoCapture(0)
 f_width = 640
 f_height = 480
 
-offset = 180
+offset = 200
+start_line=offset-50
+end_line=f_width-offset-50
 velocity = 0
-road_length=15
+road_length=11
 start_time = 0
 end_time = 0
 
@@ -31,8 +33,8 @@ while(True):
     img = cv2.resize(img, (f_width, f_height))
     height,width=img.shape[0:2]
     
-    #cv2.line(img,(width-offset,0),(width-offset,height),(0,255,255),2)
-    #cv2.line(img,(offset,0),(offset,height),(255,0,0),2)
+    cv2.line(img,(start_line,0),(start_line,height),(0,0,255),2)
+    cv2.line(img,(end_line,0),(end_line,height),(255,0,0),2)
     
     blur=cv2.blur(img,(3,3))
     gray=cv2.cvtColor(blur,cv2.COLOR_BGR2GRAY)
@@ -42,23 +44,20 @@ while(True):
     for (x,y,w,h) in cars:
 
         carCx=int(x+w/2)
-        linCx_max=width-offset
-        linCx_min=offset
-
-        if (carCx>linCx_min and carCx<linCx_max):
-            color = (0,0,255)
-        if (carCx<linCx_min or carCx>linCx_max):
+        if (carCx < start_line or carCx > end_line):
             color = (0,255,0)
+        else:
+            color = (0,0,255)
         cv2.rectangle(img,(x,y),(x+w,y+h),color,2)
         #cv2.putText(img,velocity,(x,y-10),cv2.FONT_HERSHEY_SIMPLEX,0.5,color,2)
 
 
-        if (carCx > linCx_min and carCx<linCx_max and flag == 0):
+        if (carCx > start_line and carCx < end_line and flag == 0):
             start_time = time.time()
             flag = 1
             max_time=0
             print("startTime :" + str(start_time))        
-        if (carCx > linCx_max and flag == 1):
+        if (carCx > end_line and flag == 1):
             end_time = time.time()
             flag = 2
             print("endTime :" + str(end_time), end="\n")
@@ -72,7 +71,7 @@ while(True):
             #velocity=velocity*0.036 #for km/h
             print(velocity)
             flag = 0
-            if (velocity > 50):
+            if (velocity > 30):
                 #GPIO.output(7, True)
                 alert_color = (0,0,255)
             else:
